@@ -39,10 +39,9 @@ namespace AI.Tasks
 				do {
 					NavMesh.SamplePosition (UnityEngine.Random.insideUnitSphere * agent.speed + character.Position, out navHit, agent.speed, -1);
 				} while (character.ExploredArea.Contains (navHit.position));
-
+						
 				character.AddGoal (new Goal (new List<IRequirement> () { new AtPosition (navHit.position) }, goal));
 			} else {
-				
 
 				character.AddGoal (new Goal (new List<IRequirement> () { new Inspected (inspectable) }, goal));
 			}
@@ -50,10 +49,18 @@ namespace AI.Tasks
 
 		private List<IInspectable> FindInspectablesInView(AICharacter character) {
 			List<IInspectable> inspectables = new List<IInspectable> ();
-			RaycastHit[] castStar = Physics.SphereCastAll(character.transform.position, 360, Vector3.forward);
+			RaycastHit[] castStar = Physics.SphereCastAll(character.transform.position, 165, Vector3.forward, 50);
 			foreach (RaycastHit raycastHit in castStar) {
-				if (raycastHit.collider.GetComponentInChildren<IInspectable>() != null && raycastHit.collider.GetComponentInChildren<AICharacter>() != character) {
-					inspectables.Add (raycastHit.collider.GetComponentInChildren<IInspectable> ());
+				if ( raycastHit.collider.GetComponentInChildren<AICharacter>() != character) {
+					IInspectable inspectable = null;
+					if (raycastHit.collider.GetComponentInChildren<IInspectable>() != null) {
+						inspectable = raycastHit.collider.GetComponentInChildren<IInspectable> ();
+					} else if (raycastHit.collider.GetComponentInParent<IInspectable>() != null) {
+						inspectable = raycastHit.collider.GetComponentInParent<IInspectable> ();
+					}
+					if (inspectable != null && !inspectables.Contains(inspectable)) {
+						inspectables.Add (inspectable);
+					}
 				}
 			}
 			return inspectables;

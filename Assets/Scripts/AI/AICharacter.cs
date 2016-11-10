@@ -8,6 +8,8 @@ namespace AI
 	public class AICharacter : MonoBehaviour, ICharacter, IInspectable
 	{
 		public List<IGoal> goals = new List<IGoal>();
+		public GameObject target;
+		public GameObject targetPrefab;
 
 		private Resolution resolution;
 		private DecisionManager decisionManager;
@@ -29,6 +31,9 @@ namespace AI
 
 			if (null == GetComponent<PositionTracker> ()) {
 				gameObject.AddComponent<PositionTracker>();
+			}
+			if (null == target) {
+				target = Instantiate (targetPrefab);
 			}
 
 			AddGoal (new Goal (new List<IRequirement> () { new ExploreArea(50) }));

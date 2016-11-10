@@ -15,6 +15,7 @@ namespace AI.Requirements
 			return character.Knows(inspectable);
 		}
 
+
 		public IInspectable Inspectable {
 			get { return inspectable; }
 		}

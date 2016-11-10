@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ResourceNode : MonoBehaviour, IInspectable {
 
@@ -18,6 +19,16 @@ public class ResourceNode : MonoBehaviour, IInspectable {
 	}
 
 	public Vector3 ClosestPoint(Vector3 position) {
-		return GetComponent<Renderer> ().bounds.ClosestPoint(position);
+		if (GetComponent<Collider> () != null) {
+			return GetComponent<Collider> ().bounds.ClosestPoint(position);
+		}
+		List<Vector3> closestPoints = new List<Vector3> ();
+		foreach (Collider collider in GetComponentsInChildren<Collider>()) {
+			closestPoints.Add (collider.bounds.ClosestPoint(position));
+		}
+		closestPoints.Sort (delegate(Vector3 x, Vector3 y) {
+			return (x - position).magnitude.CompareTo((y - position).magnitude);
+		});
+		return closestPoints.Count > 0 ? closestPoints[0] : Vector3.zero;
 	}
 }

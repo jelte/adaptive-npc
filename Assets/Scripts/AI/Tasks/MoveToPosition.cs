@@ -21,6 +21,8 @@ namespace AI.Tasks {
 			
 		public void Execute (AICharacter character, IGoal goal) {
 			NavMeshAgent agent = character.gameObject.GetComponent<NavMeshAgent> ();
+			character.target.transform.position = this.position;
+			character.target.SetActive(true);
 			agent.SetDestination (this.position);
 		}
 
