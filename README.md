@@ -12,4 +12,4 @@ At the moment my goal is to create a little game with Adaptive NPC's (Agents).
 
 # Developers note
 
-This is a little pet project of mine to learn C# and Unity. So any tips for improvements are welcome!
+This is a little pet project of mine to improve my C# and Unity3d understanding. So any tips for improvements are welcome!
